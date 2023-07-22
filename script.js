@@ -301,7 +301,18 @@ class App{
 
     if (!data) return;
 
-    this._workouts = data;
+    this._workouts = data.map((workoutData) => {
+      // Determine the workout type (running or cycling)
+      const workoutType = workoutData.type === 'running' ? Running : Cycling;
+
+      // Create a new instance of the respective workout type with Object.create()
+      const workout = Object.create(workoutType.prototype);
+
+      // Assign the properties from the stored data to the workout object
+      Object.assign(workout, workoutData);
+
+      return workout;
+    });
 
     this._workouts.forEach(work => {
       this._renderWorkout(work);
