@@ -298,12 +298,17 @@ class App{
 
   _getLocalStorage() {
     const data = JSON.parse(localStorage.getItem('workouts'));
-
+    const workoutClasses = {
+      running: Running,
+      cycling: Cycling,
+      // Add more workout types here as needed...
+    };
+    
     if (!data) return;
 
+
     this._workouts = data.map((workoutData) => {
-      // Determine the workout type (running or cycling)
-      const workoutType = workoutData.type === 'running' ? Running : Cycling;
+      const workoutType = workoutClasses[workoutData.type];
 
       // Create a new instance of the respective workout type with Object.create()
       const workout = Object.create(workoutType.prototype);
@@ -318,7 +323,6 @@ class App{
       this._renderWorkout(work);
     });
   }
-
   reset() {
     localStorage.removeItem('workouts');
     location.reload();
